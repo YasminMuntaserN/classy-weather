@@ -139,18 +139,16 @@ export function Weather({ weather, location }) {
   );
 }
 
-class Day extends React.Component {
-  render() {
-    const { date, min, max, code, isToday } = this.props;
-    return (
-      <li className="day">
-        <span>{getWeatherIcon(code)}</span>
-        <p>{isToday ? "Today" : formatDay(date)}</p>
-        <p>
-          {Math.floor(min)}&deg; - {Math.floor(max)}&deg;
-        </p>
-        <p>{date}</p>
-      </li>
-    );
-  }
+export function Day({ props }) {
+  const { date, min, max, code, isToday } = props;
+  return (
+    <li className="day">
+      <span>{getWeatherIcon(code)}</span>
+      <p>{isToday ? "Today" : formatDay(date)}</p>
+      <p>
+        {Math.floor(min)}&deg; - {Math.floor(max)}&deg;
+      </p>
+      <p>{date}</p>
+    </li>
+  );
 }

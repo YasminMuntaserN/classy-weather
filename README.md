@@ -4,7 +4,7 @@
 ![Classy Weather](https://imgur.com/RaBQAfU.jpg)
 
 ## 🚀 Live Demo
- [this link](https://createtravellist.netlify.app)
+ [this link](https://super-haupia-ab6c35.netlify.app)
  
 ## 📘 About The Project
 The weather app called "Classy Weather" is an innovative and aesthetic platform that allows users to easily and quickly view the weather of any city. The application has unique features that help users to get clear and informative information about today's weather and the next 6 days.

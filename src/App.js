@@ -18,18 +18,14 @@ function getWeatherIcon(wmoCode) {
   return icons.get(arr);
 }
 
-// This function will convert the country flag into omegy
+// This function converts a country code (like 'US' or 'PT') to its corresponding flag emoji.
 function convertToFlag(countryCode) {
   const codePoints = countryCode
-    .toUpperCase()   // Convert to uppercase letters
-    .split("")       // Split into array of characters
-    .map((char) => 127397 + char.charCodeAt());  // Calculate Unicode for each letter
-  return String.fromCodePoint(...codePoints);    // Convert to flag emoji
+    .toUpperCase()               // Ensure the country code is uppercase
+    .split('')                   // Split into individual characters
+    .map(char => 127397 + char.charCodeAt(0)); // Convert each character to a regional indicator
+  return String.fromCodePoint(...codePoints); // Convert code points to a flag emoji
 }
-
-// Example usage
-console.log(convertToFlag("us")); // Outputs 🇺🇸
-console.log(convertToFlag("gb")); // Outputs 🇬🇧
 
 
 function formatDay(dateStr) {
@@ -66,10 +62,10 @@ export default class App extends React.Component {
 
       const { latitude, longitude, timezone, name, country_code } =
         geoData.results.at(0);
-      this.setState({
-        displayLocation: `${name} ${convertToFlag(country_code)}`
-      });
-      console.log(convertToFlag(country_code));
+
+        this.setState({
+          displayLocation: `${name} ${convertToFlag(country_code)}`,
+        });
 
       // 2) Getting actual weather
       const weatherRes = await fetch(
@@ -115,7 +111,7 @@ class Input extends React.Component {
         type="text"
         placeholder="Search for Location..."
         value={this.props.location}
-        onChange={this.props.onChangeeLocation}
+        onChange={(e) => this.props.onChangeeLocation(e)}
       />
     </div>
     )

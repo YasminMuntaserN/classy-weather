@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createFactory } from 'react';
 //function that will get these weather icons here.
 function getWeatherIcon(wmoCode) {
   const icons = new Map([
@@ -33,7 +33,7 @@ function formatDay(dateStr) {
   }).format(new Date(dateStr));
 }
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {location:"london" ,
@@ -89,13 +89,55 @@ class App extends React.Component {
           </div>
           <button>Get Weather</button>
           {
-            this.state.isLoading && <p>Loading ...</p>
+            this.state.isLoading &&
+              <p className="loader">Loading ...</p>
+          }
+          {
+            this.state.weather.weathercode 
+            && <Weather weather ={this.state.weather}
+                        location ={this.state.displayLocation}/>
           }
         </div>
       );
     }
 }
 
+class Weather extends React.Component {
+    render (){
+      const {temperature_2m_max:max ,
+            temperature_2m_minx:min ,
+            time:dates,
+            weathercode:codes,
+      } = this.props.weather;
+
+      return (
+        <div>
+          <h2>Weather{this.props.location}</h2>
+          <ul className='weather'>
+            {dates.map((date , i)=><Day 
+            date={date}
+            max={max.at(i)}
+            min={min.at(i)}
+            code={codes.at(i)}
+            key={date}
+            />)}
+          </ul>
+        </div>
+      )
+    }
+}
+  class Day extends React.Component{
+    render(){
+    const {date , min , max , code} =this.props;
+      return <li className="day">
+        <span>{code}</span>
+        <p>{date}</p>
+        <p>{Math.floor(min)}&deg; &madsh; {Math.floor(max)}&deg;</p>
+        <p>{date}</p>
+
+        </li>
+    }
+  }
 
 
 

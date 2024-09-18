@@ -110,22 +110,20 @@ export function App() {
   );
 }
 
-export function Input () {
-  render() {
+export function Input ({location ,onChangeeLocation }) {
     return (
       <div>
       <input
         type="text"
         placeholder="Search for Location..."
-        value={this.props.location}
-        onChange={(e) => this.props.onChangeeLocation(e)}
+        value={location}
+        onChange={(e) => onChangeeLocation(e)}
       />
     </div>
     )
   }
-}
 
-class Weather extends React.Component {
+  export function Weather extends React.Component {
 
   render() {
     const {

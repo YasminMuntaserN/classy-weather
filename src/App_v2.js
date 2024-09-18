@@ -33,15 +33,18 @@ function formatDay(dateStr) {
   }).format(new Date(dateStr));
 }
 
-export function App() {
-  const [location, setLocation] = useState("london");
+function useFetchWeather(location) {
   const [isLoading, setIsLoading] = useState(false);
   const [displayLocation, setDisplayLocation] = useState("");
   const [weather, setWeather] = useState({});
 
   useEffect(() => {
+    // Define fetchWeather function inside the hook
     async function fetchWeather() {
-      if (location.length < 2) return setWeather({});
+      if (location.length < 2) {
+        setWeather({});
+        return;
+      }
 
       try {
         setIsLoading(true);
@@ -49,7 +52,7 @@ export function App() {
         // 1) Getting location (geocoding)
         const geoRes = await fetch(
           `https://geocoding-api.open-meteo.com/v1/search?name=${location}`
-        ); // changed from this.location to this.state.location
+        );
         const geoData = await geoRes.json();
         console.log(geoData);
 
@@ -75,16 +78,38 @@ export function App() {
     fetchWeather();
   }, [location]);
 
-  useEffect(() => {
-    fetchWeather();
-    setLocation(localStorage.getItem("location") || "");
-  }, []);
+  // Auto-fetch weather when the location changes
+
+  return { isLoading, displayLocation, weather };
+}
+
+export function useLocalStorageState(initialState, key) {
+  // Ensure `key` is a string
+  if (typeof key !== "string") {
+    throw new Error("Key must be a string");
+  }
+
+  const [value, setValue] = useState(() => {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : initialState;
+  });
 
   useEffect(() => {
-    if (this.state.location !== prevState.location) {
-      this.fetchWeather();
-      localStorage.setItem("location", location);
-    }
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key]);
+
+  return [value, setValue];
+}
+
+export default function App() {
+  const [location, setLocation] = useState(
+    () => localStorage.getItem("location") || ""
+  );
+
+  const { isLoading, displayLocation, weather } = useFetchWeather(location);
+
+  useEffect(() => {
+    localStorage.setItem("location", location);
   }, [location]);
 
   return (
@@ -139,8 +164,7 @@ export function Weather({ weather, location }) {
   );
 }
 
-export function Day({ props }) {
-  const { date, min, max, code, isToday } = props;
+export function Day({ date, min, max, code, isToday }) {
   return (
     <li className="day">
       <span>{getWeatherIcon(code)}</span>

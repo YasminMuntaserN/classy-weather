@@ -48,7 +48,7 @@ export default class App extends React.Component {
   }
 
   async fetchWeather() {
-    if(this.state.location.length < 2) return;
+    if(this.state.location.length < 2) return this.setState({weather: {}});
 
     try {
       this.setState({ isLoading: true });
@@ -93,13 +93,13 @@ export default class App extends React.Component {
   }
 
     // it same as useEffect with [location] in the depandancey array
-    componentDidUpdate(prevProps , prevState){
-      if(this.state.location !== prevState.location){
-        this.fetchWeather();
+  componentDidUpdate(prevProps , prevState){
+    if(this.state.location !== prevState.location){
+      this.fetchWeather();
 
-        localStorage.setItem("location", this.state.location);
-      }
+      localStorage.setItem("location", this.state.location);
     }
+  }
 
     render() {
     return (
@@ -137,6 +137,7 @@ class Input extends React.Component {
 }
 
 class Weather extends React.Component {
+
   render() {
     const {
       temperature_2m_max: max,
@@ -145,7 +146,8 @@ class Weather extends React.Component {
       weathercode: codes,
     } = this.props.weather;
     // const {display_Location: displayLocation}=this.props.location;
-    console.log(this.props.location);
+
+    
     return (
       <div>
         <h2>Weather {this.props.location}</h2>

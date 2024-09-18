@@ -102,14 +102,23 @@ export function useLocalStorageState(initialState, key) {
 }
 
 export default function App() {
+  // Use the custom hook for managing location state with localStorage
   const [location, setLocation] = useLocalStorageState("", "location");
+
+  // Use the custom hook for fetching weather data based on the current location
   const { isLoading, displayLocation, weather } = useFetchWeather(location);
 
   return (
     <div className="app">
       <h1>Classy Weather</h1>
+
+      {/* Input component for setting the location */}
       <Input location={location} onChangeeLocation={setLocation} />
+
+      {/* Show a loading message while fetching weather data */}
       {isLoading && <p className="loader">Loading ...</p>}
+
+      {/* Display weather information if weather data is available */}
       {weather.weathercode && (
         <Weather weather={weather} location={displayLocation} />
       )}

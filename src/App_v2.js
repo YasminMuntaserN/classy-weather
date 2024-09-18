@@ -102,15 +102,8 @@ export function useLocalStorageState(initialState, key) {
 }
 
 export default function App() {
-  const [location, setLocation] = useState(
-    () => localStorage.getItem("location") || ""
-  );
-
+  const [location, setLocation] = useLocalStorageState("", "location");
   const { isLoading, displayLocation, weather } = useFetchWeather(location);
-
-  useEffect(() => {
-    localStorage.setItem("location", location);
-  }, [location]);
 
   return (
     <div className="app">
@@ -131,7 +124,7 @@ export function Input({ location, onChangeeLocation }) {
         type="text"
         placeholder="Search for Location..."
         value={location}
-        onChange={(e) => onChangeeLocation(e)}
+        onChange={(e) => onChangeeLocation(e.target.value)}
       />
     </div>
   );

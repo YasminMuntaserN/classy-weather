@@ -109,6 +109,13 @@ export default class App extends React.Component {
   }
 }
 
+class Input extends React.Component {
+  render() {
+    return (
+      
+    )
+  }
+}
 
 class Weather extends React.Component {
   render() {
